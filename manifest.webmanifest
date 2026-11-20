@@ -1,0 +1,13 @@
+{
+  "name": "InversionLab",
+  "short_name": "InversionLab",
+  "description": "Browser simulator for priority inversion and priority inheritance protocols.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#09111f",
+  "theme_color": "#09111f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

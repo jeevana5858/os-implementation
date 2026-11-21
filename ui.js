@@ -146,3 +146,15 @@ document.querySelector('#play').addEventListener('click',()=>{
   playTimer=setInterval(step,+document.querySelector('#speed').value);
   document.querySelector('#play').textContent='❚❚ Pause';
 });
+
+document.querySelector('.menu-button')?.addEventListener('click', () => {
+  document.querySelector('.dashboard-sidebar')?.classList.toggle('mobile-open');
+});
+
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    link.classList.add('active');
+    document.querySelector('.dashboard-sidebar')?.classList.remove('mobile-open');
+  });
+});

@@ -51,6 +51,8 @@ function openLoginModal() {
 }
 
 function closeLoginModal() {
+  if (!currentSession()) return;
+
   const modal = document.getElementById('loginModal');
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
@@ -60,15 +62,28 @@ function updateSessionUI() {
   const session = currentSession();
   const button = document.getElementById('openLogin');
   const panel = document.getElementById('adminPanel');
+  const sidebarName = document.getElementById('sidebarName');
+  const sidebarRole = document.getElementById('sidebarRole');
 
   if (!session) {
     button.textContent = 'Sign in';
     panel.hidden = true;
+    sidebarName.textContent = 'Guest';
+    sidebarRole.textContent = 'Not signed in';
+    document.body.classList.remove('authenticated');
+    document.body.classList.add('app-gated');
+    openLoginModal();
     return;
   }
 
+  document.body.classList.remove('app-gated');
+  document.body.classList.add('authenticated');
+  closeLoginModal();
+
   button.textContent = `${session.name} · ${session.role === 'admin' ? 'Admin' : 'Student'} · Sign out`;
   panel.hidden = session.role !== 'admin';
+  sidebarName.textContent = session.name;
+  sidebarRole.textContent = session.role === 'admin' ? 'Administrator' : 'Student';
 }
 
 function populateAdminPanel() {

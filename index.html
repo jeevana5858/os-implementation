@@ -74,6 +74,13 @@
     </div>
 
     <main>
+      <section class="summary-grid" aria-label="Simulation summary">
+        <article class="summary-card cyan"><div><span>Protocols</span><strong>3</strong><small>Comparisons available</small></div><b>⇄</b></article>
+        <article class="summary-card green"><div><span>Tasks</span><strong>3</strong><small>Low · Medium · High</small></div><b>◎</b></article>
+        <article class="summary-card amber"><div><span>Current tick</span><strong id="currentTick">24</strong><small>Simulation timeline</small></div><b>◷</b></article>
+        <article class="summary-card pink"><div><span>Deadline checks</span><strong id="deadlineCount">—</strong><small>Across protocols</small></div><b>✓</b></article>
+      </section>
+
       <section class="controls panel">
         <div class="control-grid">
           <label><span>Low priority <strong id="lowValue">1</strong></span><input id="lowPriority" type="range" min="1" max="3" value="1"></label>
@@ -90,13 +97,6 @@
             <select id="speed"><option value="300">0.5×</option><option value="180" selected>1×</option><option value="80">2×</option></select>
           </label>
         </div>
-      </section>
-
-      <section class="summary-grid" aria-label="Simulation summary">
-        <article class="summary-card cyan"><div><span>Protocols</span><strong>3</strong><small>Comparisons available</small></div><b>⇄</b></article>
-        <article class="summary-card green"><div><span>Tasks</span><strong>3</strong><small>Low · Medium · High</small></div><b>◎</b></article>
-        <article class="summary-card amber"><div><span>Current tick</span><strong id="currentTick">24</strong><small>Simulation timeline</small></div><b>◷</b></article>
-        <article class="summary-card pink"><div><span>Deadline checks</span><strong id="deadlineCount">—</strong><small>Across protocols</small></div><b>✓</b></article>
       </section>
 
       <section class="timeline-grid" id="timelineSection">

@@ -76,6 +76,20 @@ function renderMetrics() {
     <td class="${r.missed?'miss':'meet'}">${r.missed?'1 missed':'0 missed'}</td>
     <td>${r.completion} ticks <span style="color:#91a2ba">/ deadline ${r.deadline}</span></td>
   </tr>`).join('');
+
+  // Populate dashboard summary values
+  const totalResults = results.reduce((acc, r) => {
+    acc.blockingTicks += r.blockingTicks;
+    acc.inversionTicks += r.inversionTicks;
+    acc.missed += r.missed ? 1 : 0;
+    acc.completion += r.completion;
+    return acc;
+  }, {blockingTicks: 0, inversionTicks: 0, missed: 0, completion: 0});
+
+  document.querySelector('#totalBlockingTicks').textContent = totalResults.blockingTicks + ' ticks';
+  document.querySelector('#totalInversionTicks').textContent = totalResults.inversionTicks + ' ticks';
+  document.querySelector('#totalMissed').textContent = totalResults.missed;
+  document.querySelector('#totalCompletion').textContent = totalResults.completion + ' ticks';
 }
 
 function syncLabels(){
@@ -101,3 +115,34 @@ document.querySelector('#play').addEventListener('click',()=>{
 function stopPlay(){if(playTimer)clearInterval(playTimer);playTimer=null;document.querySelector('#play').textContent='▶ Play';}
 window.addEventListener('resize',()=>renderAll());
 syncLabels();renderAll();
+
+// Update the current tick display during play and step
+function updateCurrentTickDisplay() {
+  document.querySelectorAll('.currentTick').forEach(el => el.textContent = frame);
+}
+
+// Call updateCurrentTickDisplay in the step and play event listeners
+document.querySelector('#step').addEventListener('click',()=>{stopPlay();frame=frame>=24?1:frame+1; names.forEach((name,i)=>drawTimeline(name,results[i],frame)); updateCurrentTickDisplay();});
+document.querySelector('#play').addEventListener('click',()=>{
+  if(playTimer){stopPlay();return;}
+  frame=0;
+  const step=()=>{frame++; if(frame>24){frame=24;stopPlay();return;} names.forEach((name,i)=>drawTimeline(name,results[i],frame)); updateCurrentTickDisplay();};
+  playTimer=setInterval(step,+document.querySelector('#speed').value);
+  document.querySelector('#play').textContent='❚❚ Pause';
+});
+
+// Update the tick indicator on the dashboard during play
+function updateTickIndicator() {
+  const tickIndicator = document.querySelector('#currentTick');
+  tickIndicator.textContent = `Current Tick: ${frame}`;
+}
+
+// Call updateTickIndicator in the play and step event listeners
+document.querySelector('#step').addEventListener('click',()=>{stopPlay();frame=frame>=24?1:frame+1; names.forEach((name,i)=>drawTimeline(name,results[i],frame)); updateCurrentTickDisplay(); updateTickIndicator();});
+document.querySelector('#play').addEventListener('click',()=>{
+  if(playTimer){stopPlay();return;}
+  frame=0;
+  const step=()=>{frame++; if(frame>24){frame=24;stopPlay();return;} names.forEach((name,i)=>drawTimeline(name,results[i],frame)); updateCurrentTickDisplay(); updateTickIndicator();};
+  playTimer=setInterval(step,+document.querySelector('#speed').value);
+  document.querySelector('#play').textContent='❚❚ Pause';
+});

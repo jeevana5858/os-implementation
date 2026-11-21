@@ -14,136 +14,164 @@
   <link rel="apple-touch-icon" href="icon.svg">
 </head>
 <body>
-  <header class="hero">
-    <div>
-      <p class="eyebrow">REAL-TIME OPERATING SYSTEMS LAB</p>
-      <h1>InversionLab</h1>
-      <p class="subtitle">Compare Plain Mutex, Priority Inheritance, and Priority Ceiling.</p>
+  <aside class="dashboard-sidebar">
+    <div class="brand"><span class="brand-mark">IL</span><strong>INVERSIONLAB</strong></div>
+    <nav>
+      <a class="nav-item active" href="#"><span>▦</span> Dashboard</a>
+      <a class="nav-item" href="#timelineSection"><span>◫</span> Timelines</a>
+      <a class="nav-item" href="#metrics"><span>◉</span> Metrics</a>
+      <a class="nav-item" href="#about"><span>ⓘ</span> About</a>
+    </nav>
+  </aside>
+
+  <header class="dashboard-topbar">
+    <button class="menu-button" aria-label="Menu">☰</button>
+    <div class="topbar-title">Dashboard <span>/ Simulator</span></div>
+    <div class="topbar-actions">
+      <button class="icon-button">⌕</button>
+      <button class="icon-button">♧</button>
+      <button id="openLogin" class="primary">Sign in</button>
     </div>
-    <a class="repo-link" href="https://jeevana5858.github.io/os-implementation/#about">About the project ↓</a>
   </header>
 
-  <div class="top-actions"><button id="openLogin" class="auth-button">Sign in</button></div>
-  <div id="loginModal" class="modal" aria-hidden="true">
-    <div class="modal-card">
-      <button id="closeLogin" class="modal-close" aria-label="Close">×</button>
-      <p class="eyebrow">INVERSIONLAB ACCOUNT</p>
-      <h2 id="authTitle">Sign in</h2>
-      <form id="loginForm">
-        <label>Username<input id="loginUsername" autocomplete="username" required></label>
-        <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required></label>
-        <p id="authError" class="auth-error"></p>
-        <button class="primary wide" type="submit">Sign in</button>
-        <button id="showRegister" class="text-button" type="button">Create a student account</button>
-      </form>
-      <form id="registerForm" hidden>
-        <label>Name<input id="registerName" autocomplete="name" required></label>
-        <label>Username<input id="registerUsername" autocomplete="username" required></label>
-        <label>Password<input id="registerPassword" type="password" autocomplete="new-password" minlength="4" required></label>
-        <p id="registerError" class="auth-error"></p>
-        <button class="primary wide" type="submit">Create account</button>
-        <button id="showLogin" class="text-button" type="button">Back to sign in</button>
-      </form>
-      <div class="demo-accounts">
-        <strong>Demo accounts</strong>
-        <span>Student: <code>student / student123</code></span>
-        <span>Admin: <code>admin / admin123</code></span>
+  <div class="dashboard-shell">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">REAL-TIME OPERATING SYSTEMS LAB</p>
+        <h1>InversionLab</h1>
+        <p class="subtitle">Compare Plain Mutex, Priority Inheritance, and Priority Ceiling.</p>
+      </div>
+      <a class="repo-link" href="https://jeevana5858.github.io/os-implementation/#about">About the project ↓</a>
+    </header>
+
+    <div id="loginModal" class="modal" aria-hidden="true">
+      <div class="modal-card">
+        <button id="closeLogin" class="modal-close" aria-label="Close">×</button>
+        <p class="eyebrow">INVERSIONLAB ACCOUNT</p>
+        <h2 id="authTitle">Sign in</h2>
+        <form id="loginForm">
+          <label>Username<input id="loginUsername" autocomplete="username" required></label>
+          <label>Password<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+          <p id="authError" class="auth-error"></p>
+          <button class="primary wide" type="submit">Sign in</button>
+          <button id="showRegister" class="text-button" type="button">Create a student account</button>
+        </form>
+        <form id="registerForm" hidden>
+          <label>Name<input id="registerName" autocomplete="name" required></label>
+          <label>Username<input id="registerUsername" autocomplete="username" required></label>
+          <label>Password<input id="registerPassword" type="password" autocomplete="new-password" minlength="4" required></label>
+          <p id="registerError" class="auth-error"></p>
+          <button class="primary wide" type="submit">Create account</button>
+          <button id="showLogin" class="text-button" type="button">Back to sign in</button>
+        </form>
+        <div class="demo-accounts">
+          <strong>Demo accounts</strong>
+          <span>Student: <code>student / student123</code></span>
+          <span>Admin: <code>admin / admin123</code></span>
+        </div>
       </div>
     </div>
+
+    <main>
+      <section class="controls panel">
+        <div class="control-grid">
+          <label><span>Low priority <strong id="lowValue">1</strong></span><input id="lowPriority" type="range" min="1" max="3" value="1"></label>
+          <label><span>Medium priority <strong id="mediumValue">2</strong></span><input id="mediumPriority" type="range" min="1" max="3" value="2"></label>
+          <label><span>High priority <strong id="highValue">3</strong></span><input id="highPriority" type="range" min="1" max="3" value="3"></label>
+          <label><span>Lock hold time <strong id="holdValue">6 ticks</strong></span><input id="holdTime" type="range" min="2" max="10" value="6"></label>
+          <label><span>High arrival <strong id="arrivalValue">tick 4</strong></span><input id="highArrival" type="range" min="1" max="9" value="4"></label>
+        </div>
+        <div class="actions">
+          <button id="restart" class="primary">↻ Restart</button>
+          <button id="play">▶ Play</button>
+          <button id="step">Step →</button>
+          <label class="speed">Speed
+            <select id="speed"><option value="300">0.5×</option><option value="180" selected>1×</option><option value="80">2×</option></select>
+          </label>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="Simulation summary">
+        <article class="summary-card cyan"><div><span>Protocols</span><strong>3</strong><small>Comparisons available</small></div><b>⇄</b></article>
+        <article class="summary-card green"><div><span>Tasks</span><strong>3</strong><small>Low · Medium · High</small></div><b>◎</b></article>
+        <article class="summary-card amber"><div><span>Current tick</span><strong id="currentTick">24</strong><small>Simulation timeline</small></div><b>◷</b></article>
+        <article class="summary-card pink"><div><span>Deadline checks</span><strong id="deadlineCount">—</strong><small>Across protocols</small></div><b>✓</b></article>
+      </section>
+
+      <section class="timeline-grid" id="timelineSection">
+        <article class="panel timeline-card" data-protocol="plain">
+          <div class="card-heading"><div><p class="protocol-index">01</p><h2>Plain mutex</h2></div><span class="status" id="plainStatus"></span></div>
+          <canvas id="plainCanvas"></canvas>
+        </article>
+        <article class="panel timeline-card" data-protocol="inheritance">
+          <div class="card-heading"><div><p class="protocol-index">02</p><h2>Priority inheritance</h2></div><span class="status" id="inheritanceStatus"></span></div>
+          <canvas id="inheritanceCanvas"></canvas>
+        </article>
+        <article class="panel timeline-card" data-protocol="ceiling">
+          <div class="card-heading"><div><p class="protocol-index">03</p><h2>Priority ceiling</h2></div><span class="status" id="ceilingStatus"></span></div>
+          <canvas id="ceilingCanvas"></canvas>
+        </article>
+      </section>
+
+      <section class="panel metrics-wrap" id="metrics">
+        <div class="section-heading"><div><p class="eyebrow">OBSERVED RESULTS</p><h2>Metrics comparison</h2></div></div>
+        <div class="table-scroll"><table>
+          <thead><tr><th>Protocol</th><th>High blocking</th><th>Inversion duration</th><th>Deadline misses</th><th>High completion</th></tr></thead>
+          <tbody id="metricsBody"></tbody>
+        </table></div>
+      </section>
+
+      <section class="panel about" id="about">
+        <p class="eyebrow">ABOUT THIS PROJECT</p>
+        <h2>Why priority inversion matters</h2>
+        <p>Inversion happens when a low-priority task holding a shared resource blocks a high-priority task while a medium-priority task keeps running. Priority inheritance and priority ceiling protocols prevent or reduce this interference.</p>
+        <div class="about-grid"><div><b>Simulated</b><span>Task Framework · Scenario Generator · Protocols · Trace Logger</span></div><div><b>Website</b><a href="https://jeevana5858.github.io/os-implementation/">https://jeevana5858.github.io/os-implementation/</a></div></div>
+      </section>
+
+      <section class="panel project-scope">
+        <div class="scope-grid">
+          <div>
+            <p class="eyebrow">EXISTING SYSTEM</p>
+            <h2>What the simulator provides</h2>
+            <ul>
+              <li>Home overview with Plain Mutex, Priority Inheritance and Priority Ceiling scenarios</li>
+              <li>High, Medium and Low task simulation</li>
+              <li>Graphical task timelines and protocol comparison</li>
+              <li>Deadline and blocking metrics</li>
+              <li>Adjustable priorities, lock hold time and arrival offset</li>
+              <li>Play, pause, step and restart controls</li>
+            </ul>
+          </div>
+          <div>
+            <p class="eyebrow">PROPOSED SYSTEM</p>
+            <h2>Future enhancements</h2>
+            <ol>
+              <li>Interactive custom task creation</li>
+              <li>Pause, resume and improved step-by-step animation</li>
+              <li>Waiting-time and completion-time graphs</li>
+              <li>Deadlock detection and downloadable PDF reports</li>
+              <li>Multiple resources and more scheduling algorithms</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminPanel" class="panel admin-panel" hidden>
+        <div class="section-heading"><div><p class="eyebrow">ADMIN CONTROL PANEL</p><h2>Manage InversionLab</h2></div></div>
+        <div class="admin-grid">
+          <label>Website title<input id="adminTitle" maxlength="60"></label>
+          <label>Website subtitle<input id="adminSubtitle" maxlength="150"></label>
+          <label>About text<textarea id="adminAbout" rows="4"></textarea></label>
+          <label>Default Low priority<input id="adminLow" type="range" min="1" max="3"></label>
+          <label>Default Medium priority<input id="adminMedium" type="range" min="1" max="3"></label>
+          <label>Default High priority<input id="adminHigh" type="range" min="1" max="3"></label>
+          <label>Default lock hold <input id="adminHold" type="range" min="2" max="10"></label>
+          <label>Default High arrival <input id="adminArrival" type="range" min="1" max="9"></label>
+        </div>
+        <div class="admin-actions"><button id="saveAdmin" class="primary">Save changes</button><button id="resetAdmin">Reset defaults</button></div>
+      </section>
+    </main>
   </div>
-
-  <main>
-    <section class="controls panel">
-      <div class="control-grid">
-        <label><span>Low priority <strong id="lowValue">1</strong></span><input id="lowPriority" type="range" min="1" max="3" value="1"></label>
-        <label><span>Medium priority <strong id="mediumValue">2</strong></span><input id="mediumPriority" type="range" min="1" max="3" value="2"></label>
-        <label><span>High priority <strong id="highValue">3</strong></span><input id="highPriority" type="range" min="1" max="3" value="3"></label>
-        <label><span>Lock hold time <strong id="holdValue">6 ticks</strong></span><input id="holdTime" type="range" min="2" max="10" value="6"></label>
-        <label><span>High arrival <strong id="arrivalValue">tick 4</strong></span><input id="highArrival" type="range" min="1" max="9" value="4"></label>
-      </div>
-      <div class="actions">
-        <button id="restart" class="primary">↻ Restart</button>
-        <button id="play">▶ Play</button>
-        <button id="step">Step →</button>
-        <label class="speed">Speed
-          <select id="speed"><option value="300">0.5×</option><option value="180" selected>1×</option><option value="80">2×</option></select>
-        </label>
-      </div>
-    </section>
-
-    <section class="timeline-grid">
-      <article class="panel timeline-card" data-protocol="plain">
-        <div class="card-heading"><div><p class="protocol-index">01</p><h2>Plain mutex</h2></div><span class="status" id="plainStatus"></span></div>
-        <canvas id="plainCanvas"></canvas>
-      </article>
-      <article class="panel timeline-card" data-protocol="inheritance">
-        <div class="card-heading"><div><p class="protocol-index">02</p><h2>Priority inheritance</h2></div><span class="status" id="inheritanceStatus"></span></div>
-        <canvas id="inheritanceCanvas"></canvas>
-      </article>
-      <article class="panel timeline-card" data-protocol="ceiling">
-        <div class="card-heading"><div><p class="protocol-index">03</p><h2>Priority ceiling</h2></div><span class="status" id="ceilingStatus"></span></div>
-        <canvas id="ceilingCanvas"></canvas>
-      </article>
-    </section>
-
-    <section class="panel metrics-wrap">
-      <div class="section-heading"><div><p class="eyebrow">OBSERVED RESULTS</p><h2>Metrics comparison</h2></div></div>
-      <div class="table-scroll"><table>
-        <thead><tr><th>Protocol</th><th>High blocking</th><th>Inversion duration</th><th>Deadline misses</th><th>High completion</th></tr></thead>
-        <tbody id="metricsBody"></tbody>
-      </table></div>
-    </section>
-
-    <section class="panel about" id="about">
-      <p class="eyebrow">ABOUT THIS PROJECT</p>
-      <h2>Why priority inversion matters</h2>
-      <p>Inversion happens when a low-priority task holding a shared resource blocks a high-priority task while a medium-priority task keeps running. Priority inheritance and priority ceiling protocols prevent or reduce this interference.</p>
-      <div class="about-grid"><div><b>Simulated</b><span>Task Framework · Scenario Generator · Protocols · Trace Logger</span></div><div><b>Website</b><a href="https://jeevana5858.github.io/os-implementation/">https://jeevana5858.github.io/os-implementation/</a></div></div>
-    </section>
-
-    <section class="panel project-scope">
-      <div class="scope-grid">
-        <div>
-          <p class="eyebrow">EXISTING SYSTEM</p>
-          <h2>What the simulator provides</h2>
-          <ul>
-            <li>Home overview with Plain Mutex, Priority Inheritance and Priority Ceiling scenarios</li>
-            <li>High, Medium and Low task simulation</li>
-            <li>Graphical task timelines and protocol comparison</li>
-            <li>Deadline and blocking metrics</li>
-            <li>Adjustable priorities, lock hold time and arrival offset</li>
-            <li>Play, pause, step and restart controls</li>
-          </ul>
-        </div>
-        <div>
-          <p class="eyebrow">PROPOSED SYSTEM</p>
-          <h2>Future enhancements</h2>
-          <ol>
-            <li>Interactive custom task creation</li>
-            <li>Pause, resume and improved step-by-step animation</li>
-            <li>Waiting-time and completion-time graphs</li>
-            <li>Deadlock detection and downloadable PDF reports</li>
-            <li>Multiple resources and more scheduling algorithms</li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <section id="adminPanel" class="panel admin-panel" hidden>
-      <div class="section-heading"><div><p class="eyebrow">ADMIN CONTROL PANEL</p><h2>Manage InversionLab</h2></div></div>
-      <div class="admin-grid">
-        <label>Website title<input id="adminTitle" maxlength="60"></label>
-        <label>Website subtitle<input id="adminSubtitle" maxlength="150"></label>
-        <label>About text<textarea id="adminAbout" rows="4"></textarea></label>
-        <label>Default Low priority<input id="adminLow" type="range" min="1" max="3"></label>
-        <label>Default Medium priority<input id="adminMedium" type="range" min="1" max="3"></label>
-        <label>Default High priority<input id="adminHigh" type="range" min="1" max="3"></label>
-        <label>Default lock hold <input id="adminHold" type="range" min="2" max="10"></label>
-        <label>Default High arrival <input id="adminArrival" type="range" min="1" max="9"></label>
-      </div>
-      <div class="admin-actions"><button id="saveAdmin" class="primary">Save changes</button><button id="resetAdmin">Reset defaults</button></div>
-    </section>
-  </main>
 
   <script src="sim.js"></script>
   <script src="ui.js"></script>

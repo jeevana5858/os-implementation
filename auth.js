@@ -177,3 +177,8 @@ document.getElementById('resetAdmin').addEventListener('click', () => {
 applyConfig();
 populateAdminPanel();
 updateSessionUI();
+
+// Force authentication on first visit
+if (!currentSession()) {
+  openLoginModal();
+}
